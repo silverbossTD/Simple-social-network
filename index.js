@@ -8,7 +8,7 @@ const cookieParser   = require('cookie-parser');
 const fileUpload     = require('express-fileupload');
 
 const app            = express();
-const port           = 4000;
+const port           = process.env.PORT || 4000;
 
 const homeRoute      = require('./routes/home.route');
 const authRoute      = require('./routes/auth.route');
