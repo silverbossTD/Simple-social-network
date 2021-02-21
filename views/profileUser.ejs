@@ -1,0 +1,31 @@
+<div class="container">
+    <h1><%= title %></h1>
+    <div class="card py-5">
+        <div class="px-4"> <span class="text-uppercase name">Profile Picture</span>
+            <div class="d-flex flex-row align-items-center"> <img <% if(locals.infomation) {%> src="<%= locals.infomation[6] %>" <% } %> width="60" class="rounded">
+            </div>
+        </div>
+        <div class="inputs px-4">
+            <span class="text-uppercase">Username:</span>
+            <input maxlength="20" type="text" name="username" class="form-control" <% if(locals.infomation) {%> value="<%= locals.infomation[2] %>" <% } %> value="">
+
+            <span class="text-uppercase">Description:</span>
+            <textarea maxlength="250" class="form-control" id="description" name="description" rows="10"><%= locals.infomation[5] %></textarea>
+        </div>
+    </div>
+</div>
+
+<h1>User's Posts</h1>
+
+<% if(locals.posts) { %>
+	<% posts.forEach(function(post){ %>
+	    <div class="container card mb-3">
+	    	<div class="d-flex flex-row align-items-center mt-2">
+	    		<img src="<%= post.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= post.userid %>"><%= post.username %></a><p class="ml-2 mt-3" style="color: gray"><%= post.date %></p>
+	    	</div>
+	    	<div class="px-5">
+	    		<p><%= post.content %></p>
+	    	</div>
+	    </div>
+	<% }); %>
+<% } %>

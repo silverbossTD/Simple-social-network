@@ -1,0 +1,34 @@
+<h1> <%= title %> </h1>
+
+<% if(locals.errors) { %>
+	<% locals.errors.forEach(function(error) { %>
+		<div class="alert alert-danger"> <%= error %> </div>
+	<% }); %>
+<% } %>
+
+<% if(locals.success) { %>
+	<% locals.success.forEach(function(success) { %>
+		<div class="alert alert-success"> <%= success %> </div>
+	<% }); %>
+<% } %>
+
+<form action="/post/create" method="POST">
+    <span class="text-uppercase">Content:</span>
+    <textarea maxlength="500" class="form-control" id="content" name="content" rows="10" ></textarea>
+<button class="btn btn-primary mr-3 mt-3">Post</button>
+</form>
+
+<h1>Your posts</h1>
+
+<% if(locals.posts) { %>
+	<% posts.forEach(function(post){ %>
+	    <div class="container card mb-3">
+	    	<div class="d-flex flex-row align-items-center mt-2">
+	    		<img src="<%= post.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= post.userid %>"><%= post.username %></a><p class="ml-2 mt-3" style="color: gray"><%= post.date %></p>
+	    	</div>
+	    	<div class="px-5">
+	    		<p><%= post.content %></p>
+	    	</div>
+	    </div>
+	<% }); %>
+<% } %>

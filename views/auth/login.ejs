@@ -1,0 +1,19 @@
+<h1> <%= title %> </h1>
+
+<% if(locals.errors) { %>
+	<% locals.errors.forEach(function(error) { %>
+		<div class="alert alert-danger"> <%= error %> </div>
+	<% }); %>
+<% } %>
+
+<form method="POST">
+    <div class="form-group">
+		<label>Email:</label>
+		<input id="email" class="form-control" name="email" type="text">
+	</div>
+	<div class="form-group">
+		<label>Password</label>
+		<input id="password" class="form-control" name="password" type="password">
+	</div>
+<button class="btn btn-primary mr-3">Login</button>Do not have an account? register <a href="/auth/register">here</a>
+</form>
