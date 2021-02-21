@@ -32,14 +32,38 @@ class PostController {
 
                 newPost.save();
             }
+        })
+        .then(() => {
+            res.redirect('/post');
         });
-
-        success.push('The post has been successfully posted');
-        res.render('post', {
-            title: "Post",
-            errors: errors,
-            success: success
+    }
+    async delete(req, res, next) {
+        const id = req.params.id;
+        Post.deleteOne( { id : id } )
+        .then(() => {
+            res.redirect('/post');
+        })
+        .catch(next);
+    }
+    async edit(req, res, next) {
+        const id = req.params.id;
+        await Post.find({ id: id }, req.body)
+        .then((post) => {
+            const content = post[0].content;
+            res.render('post', {
+                title: 'Edit post',
+                logout: true,
+                content: content
+            });
         });
+    }
+    async editPost(req, res, next) {
+        const id = req.params.id;
+        await Post.updateOne( { id: id }, req.body.content )
+        .then(() => {
+            res.redirect('/post');
+        })
+        .catch(next);
     }
 }
 

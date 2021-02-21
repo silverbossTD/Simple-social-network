@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
 
-function displayPost(req, res, next) {
+function displayPost(req, res, next, userid) {
     /* Display all posts */
     Post.find({})
         .then(posts => {
@@ -12,6 +12,7 @@ function displayPost(req, res, next) {
             res.render('index', {
                 title: 'Home',
                 logout: true,
+                userid: userid,
                 posts: posts
             });
         })
@@ -23,7 +24,7 @@ class HomeController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
-                displayPost(req, res, next);
+                displayPost(req, res, next, idUser);
             } else {
                 res.redirect('/auth/login');
                 return;
