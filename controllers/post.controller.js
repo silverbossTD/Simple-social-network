@@ -1,5 +1,7 @@
-const Post      = require('../models/Post');
-const User      = require('../models/User');
+const Post         = require('../models/Post');
+const User         = require('../models/User');
+const Comment      = require('../models/Comment');
+
 const shortid   = require('shortid');
 
 class PostController {
@@ -64,6 +66,49 @@ class PostController {
             res.redirect('/post');
         })
         .catch(next);
+    }
+    async comments(req, res, next) {
+        const idPost = req.params.id;
+        await Post.find({ id: idPost })
+        .then(post => {
+            post = post[0];
+            post.comments.sort(function(a,b){
+              return new Date(b.date) - new Date(a.date);
+            });
+            res.render('comments', {
+                title: 'Comments',
+                post: post,
+                logout: true,
+                comments: post.comments
+            });
+        });
+    }
+    async postComment(req, res, next) {
+        const idPost = req.params.id;
+        const idUser = req.cookies.userId;
+
+        await Post.find({ id: idPost })
+        .then(post => {
+            post = post[0];
+            User.find({ id: idUser })
+            .then(user => {
+                user = user[0];
+                const newComment = new Comment({
+                    id: shortid.generate(),
+                    userid: user.id,
+                    username: user.username,
+                    avatar: user.avatar,
+                    content: req.body.content,
+                    date: new Date()
+                });
+                post.comments.push(newComment);
+                post.save().then(savedPost => {
+                    newComment.save().then((completed) => {
+                        res.redirect(`/post/comments/${idPost}`);
+                    })
+                });
+            });
+        });
     }
 }
 

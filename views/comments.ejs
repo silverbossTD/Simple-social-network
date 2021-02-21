@@ -1,0 +1,30 @@
+<div class="container card mb-3">
+    <div class="d-flex flex-row align-items-center mt-2">
+        <img src="<%= post.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= post.userid %>"><%= post.username %></a><p class="ml-2 mt-3" style="color: gray"><%= post.date %></p>
+    </div>
+    <div class="px-5">
+        <p><%= post.content %></p>
+    </div>
+</div>
+
+<hr>
+
+<h1><%= title %></h1>
+
+<form method="POST">
+    <div class="form-group">
+		<textarea id="content" class="form-control" name="content" row="10"></textarea>
+	</div>
+<button class="btn btn-primary mr-3">Post Comment</button>
+</form>
+
+<% comments.forEach(function(comment){ %>
+    <div class="container card mb-3">
+        <div class="d-flex flex-row align-items-center mt-2">
+            <img src="<%= comment.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= comment.userid %>"><%= comment.username %></a><p class="ml-2 mt-3" style="color: gray"><%= comment.date %></p>
+        </div>
+        <div class="px-5">
+            <p><%= comment.content %></p>
+        </div>
+    </div>
+<% }); %>

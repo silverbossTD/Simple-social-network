@@ -22,6 +22,9 @@
 	    <div class="container card mb-3">
 	    	<div class="d-flex flex-row align-items-center mt-2">
 	    		<img src="<%= post.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= post.userid %>"><%= post.username %></a><p class="ml-2 mt-3" style="color: gray"><%= post.date %></p>
+                <a href="/post/comments/<%= post.id %>" id="edit<%= post.id %>" style="color:#32a5db; font-size:20px" class="ml-3">
+                    <i class="fa fa-comment"></i>
+                </a>
 	    	</div>
 	    	<div class="px-5">
 	    		<p><%= post.content %></p>
