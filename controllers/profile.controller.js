@@ -1,21 +1,6 @@
-const User = require('../models/User');
-const Post = require('../models/Post');
-
-function uploadAvatar(file) {
-    if (!file) {
-        return;
-    } else {
-        let file = file.uploadedFile;
-        let filename = file.name;
-        console.log(filename);
-        let uploadDir = './public/images/uploads/';
-
-        file.mv(uploadDir + filename, (error) => {
-            if (error)
-                throw error
-        })
-    }
-}
+const User      = require('../models/User');
+const Post      = require('../models/Post');
+const shortid   = require('shortid');
 
 function updateProfile(req, res, infomation, success, errors) {
     res.render('profile', {
@@ -72,6 +57,23 @@ class ProfileController {
                 return;
             }
         });
+    }
+    async updateAvatar(req, res, next) {
+        const idUser = req.cookies.userId;
+        if (req.files) {
+            let file = req.files.avatar;
+            let filename = shortid.generate() + '.png';
+            let uploadDir = './public/images/upload/';
+
+            file.mv(uploadDir + filename)
+            .then(() => {
+                User.updateOne({ id: idUser }, { avatar: `/images/upload/${filename}` })
+                .then(() => {
+                    res.redirect('/profile');
+                });
+            })
+            .catch(error => console.log(error));
+        }
     }
     async profileUser(req, res, next) {
         const idUser = req.params.id;
