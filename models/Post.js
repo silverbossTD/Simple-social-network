@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const Post = new Schema({
-    post:	   {type: String},
     id:            {type: String},
     userid:        {type: String},
     avatar:        {type: String, default: '/images/upload/noavatar.png'},
