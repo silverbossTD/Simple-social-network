@@ -2,7 +2,7 @@ const Post         = require('../models/Post');
 const User         = require('../models/User');
 const Comment      = require('../models/Comment');
 
-const shortid   = require('shortid');
+const shortid      = require('shortid');
 
 class PostController {
     async create(req, res, next) {
@@ -42,6 +42,7 @@ class PostController {
     async delete(req, res, next) {
         const id = req.params.id;
         Post.deleteOne( { id : id } )
+        .then(() => Comment.remove({ post: id }))
         .then(() => {
             res.redirect('/post');
         })
@@ -94,6 +95,7 @@ class PostController {
             .then(user => {
                 user = user[0];
                 const newComment = new Comment({
+                    post: idPost,
                     id: shortid.generate(),
                     userid: user.id,
                     username: user.username,
