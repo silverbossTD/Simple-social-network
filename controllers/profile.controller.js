@@ -1,6 +1,13 @@
-const User      = require('../models/User');
-const Post      = require('../models/Post');
-const shortid   = require('shortid');
+const User          = require('../models/User');
+const Post          = require('../models/Post');
+
+const imgur         = require('imgur-upload');
+const path          = require('path');
+const myClientID    = "368efbb07588b30";
+
+const shortid       = require('shortid');
+
+imgur.setClientID(myClientID);
 
 function updateProfile(req, res, infomation, success, errors) {
     res.render('profile', {
@@ -65,14 +72,11 @@ class ProfileController {
             let filename = shortid.generate() + '.png';
             let uploadDir = './public/images/upload/';
 
-            file.mv(uploadDir + filename)
-            .then(() => {
-                User.updateOne({ id: idUser }, { avatar: `/images/upload/${filename}` })
-                .then(() => {
-                    res.redirect('/profile');
-                });
-            })
-            .catch(error => console.log(error));
+            await file.mv(uploadDir + filename);
+            await imgur.upload(uploadDir + filename, function(err, respone){
+                User.updateOne({ id: idUser }, { avatar: `${respone.data.link}` })
+                .then(() => res.redirect('/profile'));
+            });
         }
     }
     async profileUser(req, res, next) {

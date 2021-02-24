@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-fileupload": "^1.2.1",
+    "imgur-upload": "^0.1.2",
     "mongoose": "^5.11.17",
     "nodemon": "^2.0.7",
     "shortid": "^2.2.16"
