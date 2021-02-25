@@ -4,7 +4,7 @@ if ($('#content').val().length < 20) {
 }
 
 $('#content')[0].addEventListener('input', (e) => {
-    if ($('#content').val().length >= 20 && validateContent($('#content').val())) {
+    if ($('#content').val().length >= 20) {
         $('#postButton').removeClass('disabled');
         $('#postButton').css('pointer-events','auto');
     } else {
@@ -12,8 +12,3 @@ $('#content')[0].addEventListener('input', (e) => {
         $('#postButton').css('pointer-events','none');
     }
 });
-
-function validateContent(content) {
-    const re = /[^a-zA-Z ]/;
-    return !re.test(String(content).toLowerCase());
-}
