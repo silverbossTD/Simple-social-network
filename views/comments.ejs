@@ -24,6 +24,9 @@
             <img src="<%= comment.avatar %>" width="40" class="rounded"><a class="ml-3" href="/profile/user/<%= comment.userid %>"><%= comment.username %></a><p class="ml-2 mt-3" style="color: gray"><%= comment.date %></p>
         </div>
         <div class="px-5">
+	   <% if (post.image) { %>
+                 <img src="<%= post.image %>" width="250" class="rounded">
+            <% } %>
             <p><%= comment.content %></p>
         </div>
     </div>
