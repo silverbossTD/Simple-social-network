@@ -6,6 +6,7 @@ const Post = new Schema({
     userid:        {type: String},
     avatar:        {type: String, default: '/images/upload/noavatar.png'},
     username:      {type: String},
+    image:         {type: String},
     content:       {type: String},
     date:          {type: Date, default: Date.now()}
 });

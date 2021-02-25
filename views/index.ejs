@@ -9,9 +9,12 @@
                     <i class="fa fa-comment"></i>
                 </a>
         	</div>
-        	<div class="px-5">
-        		<p><%= post.content %></p>
-        	</div>
+            <div class="px-5">
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" width="250" class="rounded">
+                <% } %>
+	    		<p><%= post.content %></p>
+	    	</div>
         </div>
     <% } else {%>
         <div class="container card mt-3" id="post<%= post.id %>">
@@ -30,6 +33,9 @@
                 </a>
 	    	</div>
 	    	<div class="px-5">
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" width="250" class="rounded">
+                <% } %>
 	    		<p><%= post.content %></p>
 	    	</div>
 	    </div>

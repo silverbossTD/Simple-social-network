@@ -1,8 +1,14 @@
-const Post         = require('../models/Post');
-const User         = require('../models/User');
-const Comment      = require('../models/Comment');
+const User          = require('../models/User');
+const Post          = require('../models/Post');
+const Comment       = require('../models/Comment');
 
-const shortid      = require('shortid');
+const imgur         = require('imgur-upload');
+const path          = require('path');
+const myClientID    = "368efbb07588b30";
+
+const shortid       = require('shortid');
+
+imgur.setClientID(myClientID);
 
 class PostController {
     async create(req, res, next) {
@@ -24,20 +30,39 @@ class PostController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
-                const formData          = req.body;
-                formData.id             = shortid.generate();
-                formData.userid         = user[0].id;
-                formData.username       = user[0].username;
-                formData.avatar         = user[0].avatar;
-                formData.date           = new Date();
-                const newPost           = new Post(formData);
+                if (req.files) {
+                    let file = req.files.image;
+                    let filename = shortid.generate() + '.png';
+                    let uploadDir = './public/images/upload/';
 
-                newPost.save();
+                    file.mv(uploadDir + filename)
+                    imgur.upload(uploadDir + filename, (err, respone) => {
+                        req.body.image = `${respone.data.link}`;
+
+                        const formData          = req.body;
+                        formData.id             = shortid.generate();
+                        formData.userid         = user[0].id;
+                        formData.username       = user[0].username;
+                        formData.avatar         = user[0].avatar;
+                        formData.date           = new Date();
+                        const newPost           = new Post(formData);
+
+                        newPost.save();
+                    });
+                } else {
+                    const formData          = req.body;
+                    formData.id             = shortid.generate();
+                    formData.userid         = user[0].id;
+                    formData.username       = user[0].username;
+                    formData.avatar         = user[0].avatar;
+                    formData.date           = new Date();
+                    const newPost           = new Post(formData);
+
+                    newPost.save();
+                }
             }
         })
-        .then(() => {
-            res.redirect('/post');
-        });
+        .then(() => res.redirect('/post'));
     }
     async delete(req, res, next) {
         const id = req.params.id;
@@ -62,7 +87,7 @@ class PostController {
     }
     async editPost(req, res, next) {
         const id = req.params.id;
-        await Post.updateOne( { id: id }, req.body.content )
+        await Post.updateOne( { id: id }, {content: req.body.content} )
         .then(() => {
             res.redirect('/post');
         })

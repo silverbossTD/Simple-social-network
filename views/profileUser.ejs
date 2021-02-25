@@ -26,7 +26,10 @@
                     <i class="fa fa-comment"></i>
                 </a>
 	    	</div>
-	    	<div class="px-5">
+            <div class="px-5">
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" width="250" class="rounded">
+                <% } %>
 	    		<p><%= post.content %></p>
 	    	</div>
 	    </div>
