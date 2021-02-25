@@ -70,18 +70,20 @@ class PostController {
     }
     async comments(req, res, next) {
         const idPost = req.params.id;
+        let post, comments;
         await Post.find({ id: idPost })
-        .then(post => {
-            post = post[0];
-            post.comments.sort(function(a,b){
-              return new Date(b.date) - new Date(a.date);
+        .then(data => post = data[0]);
+        await Comment.find({ post: idPost })
+        .then(data => {
+                comments = data.sort(function(a,b){
+                return new Date(b.date) - new Date(a.date);
             });
-            res.render('comments', {
-                title: 'Comments',
-                post: post,
-                logout: true,
-                comments: post.comments
-            });
+        });
+        res.render('comments', {
+            title: 'Comments',
+            post: post,
+            logout: true,
+            comments: comments
         });
     }
     async postComment(req, res, next) {
@@ -103,11 +105,8 @@ class PostController {
                     content: req.body.content,
                     date: new Date()
                 });
-                post.comments.push(newComment);
-                post.save().then(savedPost => {
-                    newComment.save().then((completed) => {
-                        res.redirect(`/post/comments/${idPost}`);
-                    })
+                newComment.save().then((completed) => {
+                    res.redirect(`/post/comments/${idPost}`);
                 });
             });
         });

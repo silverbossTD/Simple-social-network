@@ -7,7 +7,6 @@ const Post = new Schema({
     avatar:        {type: String, default: '/images/upload/noavatar.png'},
     username:      {type: String},
     content:       {type: String},
-    comments:      [{type: Schema.Types.Object}],
     date:          {type: Date, default: Date.now()}
 });
 

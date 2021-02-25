@@ -1,5 +1,6 @@
 const User          = require('../models/User');
 const Post          = require('../models/Post');
+const Comment       = require('../models/Comment');
 
 const imgur         = require('imgur-upload');
 const path          = require('path');
@@ -73,8 +74,10 @@ class ProfileController {
             let uploadDir = './public/images/upload/';
 
             await file.mv(uploadDir + filename);
-            await imgur.upload(uploadDir + filename, function(err, respone){
+            await imgur.upload(uploadDir + filename, (err, respone) => {
                 User.updateOne({ id: idUser }, { avatar: `${respone.data.link}` })
+                .then(() => Post.updateMany({userid: idUser},{avatar: `${respone.data.link}` }, {multi: true}))
+                .then(() => Comment.updateMany({userid: idUser}, {avatar: `${respone.data.link}` }, {multi: true}))
                 .then(() => res.redirect('/profile'));
             });
         }
