@@ -30,22 +30,22 @@
 <% if(locals.posts && title == "Post") { %>
 	<h1>Your posts</h1>
 	<% posts.forEach(function(post){ %>
-	    <div class="container card mb-3" id="post<%= post.id %>">
+		<div class="container card mt-3" id="post<%= post.id %>">
 	    	<div class="d-flex flex-row align-items-center mt-2">
 	    		<img src="<%= post.avatar %>" width="40" class="rounded">
 				<a class="ml-3" href="/profile/user/<%= post.userid %>"><%= post.username %></a>
 				<p class="ml-2 mt-3" style="color: gray"><%= post.date %></p>
-				<a href="#" id="delete<%= post.id %>" style="color:red; font-size:20px" class="ml-3" data-toggle="modal" data-target="#delete-post-modal<%= post.id %>">
+				<a href="#" id="delete<%= post.id %>" class="deleteButton ml-3" data-toggle="modal" data-target="#delete-post-modal<%= post.id %>">
 					<i class="fa fa-trash float-right"></i>
 				</a>
-				<a href="/post/edit/<%= post.id %>" id="edit<%= post.id %>" style="color:#f7da33; font-size:20px" class="ml-3">
+				<a href="/post/edit/<%= post.id %>" id="edit<%= post.id %>" class="editButton ml-3">
 					<i class="fa fa-edit float right"></i>
 				</a>
-				<a href="/post/comments/<%= post.id %>" id="edit<%= post.id %>" style="color:#32a5db; font-size:20px" class="ml-3">
+                <a href="/post/comments/<%= post.id %>" id="edit<%= post.id %>" class="commentsButton ml-3">
                     <i class="fa fa-comment"></i>
                 </a>
 	    	</div>
-			<div class="px-5">
+	    	<div class="px-5">
                 <% if (post.image) { %>
                     <img src="<%= post.image %>" width="250" class="rounded">
                 <% } %>

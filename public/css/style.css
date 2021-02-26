@@ -1,0 +1,24 @@
+.commentsButton {
+    color: #32a5db;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+}
+.deleteButton {
+    color:red;
+    font-size:20px;
+    position: absolute;
+    top: 0;
+    right: 30;
+    margin: 15px;
+}
+.editButton {
+    color:#f7da33;
+    font-size:20px;
+    position: absolute;
+    top: 0;
+    right: 60;
+    margin: 15px;
+}
