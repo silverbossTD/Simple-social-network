@@ -10,7 +10,7 @@
 	<% }); %>
 <% } %>
 
-<form method="POST" action="/profile/updateAvatar" enctype="multipart/form-data">
+<form method="POST" action="/profile/updateAvatar" enctype="multipart/form-data" class="container card">
 	<div class="d-flex flex-row align-items-center mt-2">
 		<img <% if(locals.infomation) {%> src="<%= locals.infomation[6] %>" <% } %> width="60" class="rounded">
 		<div class="ml-3"> <input type="file" name="avatar" class="form-control" id="file-upload" /></div>
