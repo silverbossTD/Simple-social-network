@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const Post = require('../models/Post');
 
-function displayPost(req, res, next, userid) {
+function displayPost(req, res, next, userid, infomation) {
     /* Display all posts */
     Post.find({})
         .then(posts => {
@@ -13,7 +13,8 @@ function displayPost(req, res, next, userid) {
                 title: 'Home',
                 logout: true,
                 userid: userid,
-                posts: posts
+                posts: posts,
+                infomation: infomation
             });
         })
         .catch(next);
@@ -24,7 +25,8 @@ class HomeController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
-                displayPost(req, res, next, idUser);
+                const infomation = user[0];
+                displayPost(req, res, next, idUser, infomation);
             } else {
                 res.redirect('/auth/login');
                 return;
@@ -35,8 +37,7 @@ class HomeController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
-                const { _id, id, username, email, password, description, avatar } = user[0];
-                const infomation = [ _id, id, username, email, password, description, avatar ];
+                const infomation = user[0];
                 res.render('profile', {
                     title: 'Profile',
                     logout: true,
@@ -52,6 +53,7 @@ class HomeController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
+                const infomation = user[0];
                 Post.find({ userid: idUser})
                     .then(posts => {
                         posts = posts.map(post => post.toObject());
@@ -61,7 +63,8 @@ class HomeController {
                         res.render('post', {
                             title: 'Post',
                             logout: true,
-                            posts: posts
+                            posts: posts,
+                            infomation: infomation
                         });
                     });
             } else {

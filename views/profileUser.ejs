@@ -2,15 +2,15 @@
     <h1><%= title %></h1>
     <div class="card py-5">
         <div class="px-4"> <span class="text-uppercase name">Profile Picture</span>
-            <div class="d-flex flex-row align-items-center"> <img <% if(locals.infomation) {%> src="<%= locals.infomation[6] %>" <% } %> width="60" class="rounded">
+            <div class="d-flex flex-row align-items-center"> <img src="<%= locals.userInfomation.avatar %>" width="60" class="rounded">
             </div>
         </div>
         <div class="inputs px-4">
             <span class="text-uppercase">Username:</span>
-            <input maxlength="20" type="text" name="username" class="form-control" <% if(locals.infomation) {%> value="<%= locals.infomation[2] %>" <% } %> value="">
+            <input maxlength="20" type="text" name="username" class="form-control" value="<%= locals.userInfomation.username %>" value="">
 
             <span class="text-uppercase">Description:</span>
-            <textarea maxlength="250" class="form-control" id="description" name="description" rows="10"><%= locals.infomation[5] %></textarea>
+            <textarea maxlength="250" class="form-control" id="description" name="description" rows="10"><%= locals.userInfomation.description %></textarea>
         </div>
     </div>
 </div>

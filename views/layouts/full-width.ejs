@@ -3,8 +3,8 @@
 <head>
 <!-- Custom css -->
 
-<link href="http://silversocialnetwork.herokuapp.com/css/style.css" rel="stylesheet">
-<link href="http://silversocialnetwork.herokuapp.com/css/page.css" rel="stylesheet">
+<link href="http://localhost:3000/css/style.css" rel="stylesheet">
+<link href="http://localhost:3000/css/page.css" rel="stylesheet">
 
 <!-- Bootstrap4 css -->
 
@@ -34,18 +34,20 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/profile">Profile</a>
-      </li>
-	  <li class="nav-item">
-        <a class="nav-link" href="/post">Post</a>
-      </li>
   </ul>
-		<ul class="navbar-nav">
-	  	  <li class="nav-item">
-	  		<a class="nav-link float-right" href="/logout" style="color:#ba4348"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
-	  	</li>
-	      </ul>
+		  <ul class="navbar-nav">
+  			<li class="nav-item dropdown">
+  	        <a class="nav-link dropdown-toggle float-right" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			  <img src="<%= locals.infomation.avatar %>" height="30" class="rounded">
+			  <%= locals.infomation.username %>
+  	        </a>
+  	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+  			  <a class="nav-link" href="/profile">Profile</a>
+  			  <a class="nav-link" href="/post">Post</a>
+  	          <a class="nav-link" href="/logout" style="color:#ba4348"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+  	        </div>
+  	      </li>
+  	    </ul>
   </div>
 </nav>
 <%}%>

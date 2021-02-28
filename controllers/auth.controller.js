@@ -1,5 +1,6 @@
-const User    = require('../models/User');
-const shortid = require('shortid');
+const User          = require('../models/User');
+const bcrypt        = require('bcrypt');
+const shortid       = require('shortid');
 
 class AuthController {
     login(req, res) {
@@ -21,7 +22,8 @@ class AuthController {
 
         await User.find({ email: req.body.email }, (err, user) => {
             if (user.length) {
-                if (user[0].password === req.body.password) {
+                const validPassword = bcrypt.compare(req.body.password, user[0].password);
+                if (validPassword) {
                     res.cookie('userId', user[0].id.toString());
                 } else {
                     errors.push("Wrong email or password");
@@ -77,7 +79,12 @@ class AuthController {
     		});
     		return;
     	}
+        /* Hash password */
 
+        const salt              = await bcrypt.genSalt();
+        req.body.password       = await bcrypt.hash(req.body.password, salt);
+
+        /* Create new account */
         const formData          = req.body;
         formData.id             = shortid.generate();
         formData.description    = "";

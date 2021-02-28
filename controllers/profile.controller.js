@@ -2,6 +2,7 @@ const User          = require('../models/User');
 const Post          = require('../models/Post');
 const Comment       = require('../models/Comment');
 
+const bcrypt        = require('bcrypt');
 const imgur         = require('imgur-upload');
 const path          = require('path');
 const myClientID    = "368efbb07588b30";
@@ -20,7 +21,7 @@ function updateProfile(req, res, infomation, success, errors) {
     });
 }
 
-function userPost(req, res, idUser, infomation) {
+function userPost(req, res, idUser, infomation, yourInfomation) {
     Post.find({ userid: idUser})
         .then(posts => {
             posts = posts.map(post => post.toObject());
@@ -30,7 +31,8 @@ function userPost(req, res, idUser, infomation) {
             res.render('profileUser', {
                 title: 'Profile',
                 logout: true,
-                infomation: infomation,
+                infomation: yourInfomation,
+                userInfomation: infomation,
                 posts: posts
             });
         });
@@ -42,20 +44,19 @@ class ProfileController {
         const idUser = req.cookies.userId;
         await User.find({ id: idUser }, (err, user) => {
             if (user.length) {
-                if (req.body.password && req.body.password === user[0].password) {
+                let infomation = user[0];
+                const validPassword = bcrypt.compare(req.body.password, user[0].password);
+                if (validPassword) {
                     User.updateOne({ id: idUser}, req.body)
                     .then(() => {
                         success = [], errors = [];
+                        infomation.description = req.body.description;
                         success.push('Profile change completed');
-                        const { _id, id, username, email, password, description, avatar } = user[0];
-                        const infomation = [ _id, id, req.body.username, email, password, req.body.description, avatar ];
                         updateProfile(req, res, infomation, success, errors);
                     })
                     .catch(next);
                 } else {
                     success = [], errors = [];
-                    const { _id, id, username, email, password, description, avatar } = user[0];
-                    const infomation = [ _id, id, username, email, password, description, avatar ];
                     errors.push('Please type the password');
                     updateProfile(req, res, infomation, success, errors);
                     return;
@@ -84,12 +85,16 @@ class ProfileController {
     }
     async profileUser(req, res, next) {
         const idUser = req.params.id;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                const { _id, id, username, email, password, description, avatar } = user[0];
-                const infomation = [ _id, id, username, email, password, description, avatar ];
-                userPost(req, res, idUser, infomation);
-            }
+        let yourInfomation;
+        await User.find({ id: req.cookies.userId })
+        .then((user) => {yourInfomation = user[0]})
+        .then(() => {
+            User.find({ id: idUser }, (err, user) => {
+                if (user.length) {
+                    const infomation = user[0];
+                    userPost(req, res, idUser, infomation, yourInfomation);
+                }
+            });
         });
     }
 }

@@ -94,10 +94,14 @@ class PostController {
         .catch(next);
     }
     async comments(req, res, next) {
-        const idPost = req.params.id;
-        let post, comments;
+        const idPost = req.params.id, idUser = req.cookies.userId;
+        let post, comments, infomation;
+        await User.find({ id: idUser })
+        .then(user => {infomation = user[0]});
+
         await Post.find({ id: idPost })
         .then(data => post = data[0]);
+        
         await Comment.find({ post: idPost })
         .then(data => {
                 comments = data.sort(function(a,b){
@@ -108,7 +112,8 @@ class PostController {
             title: 'Comments',
             post: post,
             logout: true,
-            comments: comments
+            comments: comments,
+            infomation: infomation
         });
     }
     async postComment(req, res, next) {
