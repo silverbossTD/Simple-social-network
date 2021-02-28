@@ -30,12 +30,12 @@
                     <i class="fa fa-comment"></i>
                 </a>
 	    	</div>
-	    	<div class="px-5">
+            <div class="px-5">
+                <p><%= post.content %></p>
                 <% if (post.image) { %>
-                    <img src="<%= post.image %>" width="250" class="rounded">
+                    <img src="<%= post.image %>" width="400" class="rounded" style="margin-bottom: 10px">
                 <% } %>
-	    		<p><%= post.content %></p>
-	    	</div>
+            </div>
 	    </div>
 		<div id="delete-post-modal<%= post.id %>" class="modal" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
