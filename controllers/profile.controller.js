@@ -47,7 +47,7 @@ class ProfileController {
                 let infomation = user[0];
                 const validPassword = bcrypt.compare(req.body.password, user[0].password);
                 if (validPassword) {
-                    User.updateOne({ id: idUser}, req.body)
+                    User.updateOne({ id: idUser}, {description: req.body.description})
                     .then(() => {
                         success = [], errors = [];
                         infomation.description = req.body.description;
