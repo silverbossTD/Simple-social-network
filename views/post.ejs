@@ -45,11 +45,11 @@
                     <i class="fa fa-comment"></i>
                 </a>
 	    	</div>
-	    	<div class="px-5">
-                <% if (post.image) { %>
-                    <img src="<%= post.image %>" width="250" class="rounded">
-                <% } %>
+			<div class="px-5">
 	    		<p><%= post.content %></p>
+                <% if (post.image) { %>
+                    <img src="<%= post.image %>" width="400" class="rounded" style="margin-bottom: 10px">
+                <% } %>
 	    	</div>
 	    </div>
 		<div id="delete-post-modal<%= post.id %>" class="modal" tabindex="-1" role="dialog">

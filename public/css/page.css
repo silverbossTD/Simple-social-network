@@ -1,6 +1,9 @@
 body {
     background: #f7f7f7 !important;
 }
+img {
+    pointer-events: none;
+}
 ::-webkit-scrollbar {
     display: none;
 }
