@@ -28,41 +28,44 @@ class PostController {
     	}
 
         const idUser = req.cookies.userId;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                if (req.files) {
-                    let file = req.files.image;
-                    let filename = shortid.generate() + '.png';
-                    let uploadDir = './public/images/upload/';
+        const user = await User.find({ id: idUser });
 
-                    file.mv(uploadDir + filename)
-                    imgur.upload(uploadDir + filename, (err, respone) => {
-                        req.body.image = `${respone.data.link}`;
+        if (user && !req.files) {
+            const formData          = req.body;
+            formData.id             = shortid.generate();
+            formData.userid         = user[0].id;
+            formData.username       = user[0].username;
+            formData.avatar         = user[0].avatar;
+            formData.date           = new Date();
+            const newPost           = new Post(formData);
 
-                        const formData          = req.body;
-                        formData.id             = shortid.generate();
-                        formData.userid         = user[0].id;
-                        formData.username       = user[0].username;
-                        formData.avatar         = user[0].avatar;
-                        formData.date           = new Date();
-                        const newPost           = new Post(formData);
+            newPost.save();
 
-                        newPost.save();
-                    });
-                } else {
-                    const formData          = req.body;
-                    formData.id             = shortid.generate();
-                    formData.userid         = user[0].id;
-                    formData.username       = user[0].username;
-                    formData.avatar         = user[0].avatar;
-                    formData.date           = new Date();
-                    const newPost           = new Post(formData);
+            res.redirect('/post');
+            return;
+        }
+        
+        let file = req.files.image;
+        let filename = shortid.generate() + '.png';
+        let uploadDir = './public/images/upload/';
 
-                    newPost.save();
-                }
-            }
-        })
-        .then(() => res.redirect('/post'));
+        file.mv(uploadDir + filename)
+        imgur.upload(uploadDir + filename, (err, respone) => {
+            req.body.image          = `${respone.data.link}`;
+
+            const formData          = req.body;
+            formData.id             = shortid.generate();
+            formData.userid         = user[0].id;
+            formData.username       = user[0].username;
+            formData.avatar         = user[0].avatar;
+            formData.date           = new Date();
+            const newPost           = new Post(formData);
+
+            newPost.save();
+
+            res.redirect('/post');
+            return;
+        });
     }
     async delete(req, res, next) {
         const id = req.params.id;
@@ -101,7 +104,7 @@ class PostController {
 
         await Post.find({ id: idPost })
         .then(data => post = data[0]);
-        
+
         await Comment.find({ post: idPost })
         .then(data => {
                 comments = data.sort(function(a,b){

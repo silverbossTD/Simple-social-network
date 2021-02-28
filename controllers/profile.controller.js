@@ -40,32 +40,32 @@ function userPost(req, res, idUser, infomation, yourInfomation) {
 
 class ProfileController {
     async edit(req, res, next) {
-        let success = [], errors = [];
-        const idUser = req.cookies.userId;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                let infomation = user[0];
-                const validPassword = bcrypt.compare(req.body.password, user[0].password);
-                if (validPassword) {
-                    User.updateOne({ id: idUser}, {description: req.body.description})
-                    .then(() => {
-                        success = [], errors = [];
-                        infomation.description = req.body.description;
-                        success.push('Profile change completed');
-                        updateProfile(req, res, infomation, success, errors);
-                    })
-                    .catch(next);
-                } else {
-                    success = [], errors = [];
-                    errors.push('Please type the password');
-                    updateProfile(req, res, infomation, success, errors);
-                    return;
-                }
-            } else {
-                res.redirect('/auth/login');
-                return;
-            }
-        });
+        let success = [], errors = [], idUser = req.cookies.userId;
+        const user = await User.find({ id: idUser });
+
+        if (!user) {
+            res.redirect('/auth/login');
+            return;
+        }
+        
+        let infomation = user[0];
+        const validPassword = await bcrypt.compare(req.body.password, user[0].password);
+
+        if (!validPassword) {
+            success = [], errors = [];
+            errors.push('Please type the password');
+            updateProfile(req, res, infomation, success, errors);
+            return;
+        }
+
+        await User.updateOne({ id: idUser}, {description: req.body.description})
+        .then(() => {
+            success = [], errors = [];
+            infomation.description = req.body.description;
+            success.push('Profile change completed');
+            updateProfile(req, res, infomation, success, errors);
+        })
+        .catch(next);
     }
     async updateAvatar(req, res, next) {
         const idUser = req.cookies.userId;

@@ -22,55 +22,54 @@ function displayPost(req, res, next, userid, infomation) {
 
 class HomeController {
     async index(req, res, next) {
-        const idUser = req.cookies.userId;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                const infomation = user[0];
-                displayPost(req, res, next, idUser, infomation);
-            } else {
-                res.redirect('/auth/login');
-                return;
-            }
-        });
+        const idUser    = req.cookies.userId;
+        const user      = await User.find({ id: idUser });
+
+        if (!user) {
+            res.redirect('/auth/login');
+            return;
+        }
+        const infomation = user[0];
+        displayPost(req, res, next, idUser, infomation);
     }
     async profile(req, res) {
-        const idUser = req.cookies.userId;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                const infomation = user[0];
-                res.render('profile', {
-                    title: 'Profile',
-                    logout: true,
-                    infomation: infomation
-                });
-            } else {
-                res.redirect('/auth/login');
-                return;
-            }
+        const idUser    = req.cookies.userId;
+        const user      = await User.find({ id: idUser });
+
+        if (!user) {
+            res.redirect('/auth/login');
+            return;
+        }
+
+        const infomation = user[0];
+        res.render('profile', {
+            title: 'Profile',
+            logout: true,
+            infomation: infomation
         });
     }
     async post(req, res) {
-        const idUser = req.cookies.userId;
-        await User.find({ id: idUser }, (err, user) => {
-            if (user.length) {
-                const infomation = user[0];
-                Post.find({ userid: idUser})
-                    .then(posts => {
-                        posts = posts.map(post => post.toObject());
-                        posts.sort(function(a,b){
-                          return new Date(b.date) - new Date(a.date);
-                        });
-                        res.render('post', {
-                            title: 'Post',
-                            logout: true,
-                            posts: posts,
-                            infomation: infomation
-                        });
-                    });
-            } else {
-                res.redirect('/auth/login');
-                return;
-            }
+        const idUser    = req.cookies.userId;
+        const user      = await User.find({ id: idUser });
+
+        if (!user) {
+            res.redirect('/auth/login');
+            return;
+        }
+
+        const infomation = user[0];
+        Post.find({ userid: idUser})
+        .then(posts => {
+            posts = posts.map(post => post.toObject());
+            posts.sort(function(a,b){
+              return new Date(b.date) - new Date(a.date);
+            });
+            res.render('post', {
+                title: 'Post',
+                logout: true,
+                posts: posts,
+                infomation: infomation
+            });
         });
     }
     logout(req, res) {

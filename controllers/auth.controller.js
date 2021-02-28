@@ -20,18 +20,18 @@ class AuthController {
     		errors.push("Wrong email or password");
     	}
 
-        await User.find({ email: req.body.email }, (err, user) => {
-            if (user.length) {
-                const validPassword = bcrypt.compare(req.body.password, user[0].password);
-                if (validPassword) {
-                    res.cookie('userId', user[0].id.toString());
-                } else {
-                    errors.push("Wrong email or password");
-                }
+        const user = await User.find({ email: req.body.email });
+
+        if (user) {
+            const validPassword = await bcrypt.compare(req.body.password, user[0].password);
+            if (validPassword) {
+                res.cookie('userId', user[0].id.toString());
             } else {
                 errors.push("Wrong email or password");
             }
-        });
+        } else {
+            errors.push("Wrong email or password");
+        }
 
         if(errors.length) {
     		res.render('auth/login', {
