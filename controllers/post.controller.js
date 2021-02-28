@@ -30,7 +30,7 @@ class PostController {
         const idUser = req.cookies.userId;
         const user = await User.find({ id: idUser });
 
-        if (user && !req.files) {
+        if (user.length && !req.files) {
             const formData          = req.body;
             formData.id             = shortid.generate();
             formData.userid         = user[0].id;
@@ -44,7 +44,7 @@ class PostController {
             res.redirect('/post');
             return;
         }
-        
+
         let file = req.files.image;
         let filename = shortid.generate() + '.png';
         let uploadDir = './public/images/upload/';

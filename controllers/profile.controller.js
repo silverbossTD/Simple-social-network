@@ -43,11 +43,11 @@ class ProfileController {
         let success = [], errors = [], idUser = req.cookies.userId;
         const user = await User.find({ id: idUser });
 
-        if (!user) {
+        if (!user.length) {
             res.redirect('/auth/login');
             return;
         }
-        
+
         let infomation = user[0];
         const validPassword = await bcrypt.compare(req.body.password, user[0].password);
 

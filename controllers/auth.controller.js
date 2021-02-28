@@ -22,7 +22,7 @@ class AuthController {
 
         const user = await User.find({ email: req.body.email });
 
-        if (user) {
+        if (user.length) {
             const validPassword = await bcrypt.compare(req.body.password, user[0].password);
             if (validPassword) {
                 res.cookie('userId', user[0].id.toString());

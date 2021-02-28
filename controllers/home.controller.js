@@ -24,8 +24,7 @@ class HomeController {
     async index(req, res, next) {
         const idUser    = req.cookies.userId;
         const user      = await User.find({ id: idUser });
-
-        if (!user) {
+        if (!user.length) {
             res.redirect('/auth/login');
             return;
         }
@@ -36,7 +35,7 @@ class HomeController {
         const idUser    = req.cookies.userId;
         const user      = await User.find({ id: idUser });
 
-        if (!user) {
+        if (!user.length) {
             res.redirect('/auth/login');
             return;
         }
@@ -52,7 +51,7 @@ class HomeController {
         const idUser    = req.cookies.userId;
         const user      = await User.find({ id: idUser });
 
-        if (!user) {
+        if (!user.length) {
             res.redirect('/auth/login');
             return;
         }
