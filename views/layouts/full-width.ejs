@@ -56,7 +56,7 @@
 	</div>
 
 <!-- particles.js container -->
-<div id="particles-js"></div>
+<div id="particles-js" style="display: none"></div>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
@@ -65,7 +65,8 @@ $(document).ready(function(){
 	particlesJS.load('particles-js', 'http://silversocialnetwork.herokuapp.com/js/particles.json',
     function(){
         console.log('particles.json loaded...')
-    })
+    });
+	$('#particles-js').fadeIn();
  })
 </script>
 </body>
