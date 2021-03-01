@@ -15,3 +15,9 @@ img {
 .bg-light {
     background-color: #ffff !important;
 }
+
+@media screen and (max-width: 650px) {
+    .notification {
+        display: none;
+    }
+}
