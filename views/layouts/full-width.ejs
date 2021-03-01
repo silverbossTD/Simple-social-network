@@ -60,14 +60,17 @@
 <div id="particles-js" style="display: none"></div>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
+<script type="text/javascript">
+	particlesJS.load('particles-js', 'http://silversocialnetwork.herokuapp.com/js/particles.json',
+	function(){
+		console.log('particles.json loaded...')
+	});
+</script>
+
 <script>
 $(document).ready(function(){
 	 $('body').fadeIn();
-	particlesJS.load('particles-js', 'http://silversocialnetwork.herokuapp.com/js/particles.json',
-    function(){
-        console.log('particles.json loaded...')
-    });
-	$('#particles-js').fadeIn();
+	 $('#particles-js').fadeIn();
  })
 </script>
 </body>
