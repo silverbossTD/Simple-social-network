@@ -68,7 +68,14 @@
         </div>
     </div>
     <div class="container card mt-3 p-3">
-        <h4>Friends</h4>
+        <h4 id="onlineUsers">Chat 0 users online</h4>
+        <ul class="container" style="height: 300px; background: #F7F7F7; overflow: auto" id="chatWindow"></ul>
+        <div class="input-group">
+            <input type="text" id="chatInput" class="form-control" placeholder="Chat..." />
+        </div>
     </div>
 </div>
 </div>
+
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.4.min.js"></script>
+<script src="js/chat.js" charset="utf-8"></script>
