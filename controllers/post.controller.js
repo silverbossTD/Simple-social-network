@@ -115,6 +115,7 @@ class PostController {
             title: 'Comments',
             post: post,
             logout: true,
+            userid: idUser,
             comments: comments,
             infomation: infomation
         });
@@ -143,6 +144,17 @@ class PostController {
                 });
             });
         });
+    }
+    async deleteComment(req, res, next) {
+        const idPost        = req.params.id;
+        const idComment     = req.params.commentId;
+        const idUser        = req.cookies.userId;
+        
+        Comment.deleteOne( { id : idComment } )
+        .then(() => {
+            res.redirect(`/post/comments/${idPost}`);
+        })
+        .catch(next);
     }
 }
 

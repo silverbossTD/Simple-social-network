@@ -14,4 +14,6 @@ router.get('/comments/:id', controller.comments);
 
 router.post('/comments/:id', controller.postComment);
 
+router.get('/comments/:id/deleteComment/:commentId', controller.deleteComment);
+
 module.exports = router;
